@@ -133,8 +133,8 @@ router.get('/totp-input', isLoggedIn, function(req, res) {
     if(!req.user.authkey) {
         console.log("Logic error, totp-input requested with no key set");
         res.redirect('/auth/users/login');
+        req.session.eren _
     }
-
     res.render('totp-input');
 });
 
@@ -168,6 +168,12 @@ router.get('/users/signup', function (req, res) {
    res.render('signup');
 
 });
+
+router.get('/users/logout', function (req, res) {
+    req.session.destroy();
+    res.redirect('/');
+})
+
 
 router.post('/users/checkemail', function (req, res){
     connection.query("SELECT * FROM Users WHERE email = ?",[req.body.email], function(err, rows) {

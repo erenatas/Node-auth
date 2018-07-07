@@ -7,6 +7,7 @@
   },
   "dependencies": {
     "bcrypt": "^2.0.1",
+    "connect-redis": "^3.3.3",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
     "express": "~4.16.0",
@@ -20,6 +21,7 @@
     "passport-local": "^1.0.0",
     "passport-totp": "0.0.2",
     "pug": "2.0.0-beta11",
+    "redis": "^2.8.0",
     "speakeasy": "^2.0.0",
     "sprintf-js": "^1.1.1",
     "thirty-two": "^1.0.2"
