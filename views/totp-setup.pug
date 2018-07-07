@@ -1,0 +1,51 @@
+doctype html
+html(lang='en')
+    head
+        meta(charset='UTF-8')
+        meta(name='viewport', content='width=device-width, initial-scale=1.0')
+        meta(http-equiv='X-UA-Compatible', content='ie=edge')
+        title Dashboard
+        link(rel='stylesheet', href='css/icons.css')
+        link#theme.light(rel='stylesheet', href='/stylesheets/css/light.css')
+        link(href='https://fonts.googleapis.com/css?family=Roboto:400,500,700', rel='stylesheet')
+        link(rel='stylesheet', href='https://malihu.github.io/custom-scrollbar/jquery.mCustomScrollbar.min.css')
+        link(rel='stylesheet', href='/stylesheets/css/cryptocoins.css')
+        link(rel='stylesheet', href='/stylesheets/css/cryptocoins-colors.css')
+
+    body.loginLayout
+        .loginHeader
+            .logo
+                a(href='#')
+                    img(src='/images/logo.png', alt='Logo')
+        .portlet.portlet-without-header
+            .portlet-content
+                div#twofa.container
+                    div: form(action='/auth/totp-setup', method='post')
+                        fieldset
+                            .title
+                                span.line
+                                h2 2 Yönlü Doğrulama (Google Authenticator)
+                            h6.text(style='display:inline')
+                                | 1. Google Authenticator'ı akıllı telefonunuza yükleyin ve açın.
+                                a(href='https://support.google.com/accounts/answer/1066447', target='_blank') Yükleme adımları için tıklayınız.
+                            h6.text
+                                | 2. Uygulama içindeki QR kod tarayıcısını açarak, aşağıdaki QR kodu, barkod tarayıcısı ile tarayınız veya "Kod ile Aktifleştir" seçeneğini kullanarak, aşağıdaki kodu uygulama içinde çıkan ekrana giriniz.
+                            <br />
+                                -var url = qrUrl;
+                                img(alt='Scan me!', style='display: block;margin-left: auto;margin-right: auto;', src=url)
+                            //a.forgotPw(href='#') Şifremi Unuttum
+                            <br />
+                            div.form-actions
+                                input.btn.button.block.primary(type='submit', value='Onayla', style='margin: 0 auto;')
+                        //span.warning
+                            | Daha üye olmadınız mı?
+                            a.registerLink(href='#') Üye Olun
+        footer
+            .footerContent
+                .footerLogo
+                    img(src='/images/logo.png', alt='Logo')
+                .copyright
+                    | 2018 — All rights reserved
+        script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js')
+        script(src='js/app.js', type='text/javascript')
+

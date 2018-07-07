@@ -1,0 +1,21 @@
+doctype html
+html
+   head
+       meta(charset='utf-8')
+       title totp setup
+   body
+       .container
+            h3 hello, #{user.email}!
+            h4 Enable Google Authenticator
+                strong QR Kod
+                -var url = qrUrl;
+                img(alt='Scan me!', style='display: block;margin-left: auto;margin-right: auto;', src=url)
+
+       //form(action='/totp-setup', method='post')
+       //  input(type='checkbox', name='totp', onchange='this.form.submit()')
+       //         #{user.key}!
+       //form(action='/totp-setup', method='post')
+       //  input(type='checkbox', name='totp', checked='', onchange='this.form.submit()')
+       //h4 {{strings.qrSetupSteps}}
+       //img(src='{{ qrUrl }}', alt='{{ user.key }}')
+       //         #{user.key}!

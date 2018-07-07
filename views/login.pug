@@ -1,0 +1,65 @@
+doctype html
+html(lang='en')
+    head
+        meta(charset='UTF-8')
+        meta(name='viewport', content='width=device-width, initial-scale=1.0')
+        meta(http-equiv='X-UA-Compatible', content='ie=edge')
+        title Dashboard
+        link(rel='stylesheet', href='css/icons.css')
+        link#theme.light(rel='stylesheet', href='/stylesheets/css/light.css')
+        link(href='https://fonts.googleapis.com/css?family=Roboto:400,500,700', rel='stylesheet')
+        link(rel='stylesheet', href='https://malihu.github.io/custom-scrollbar/jquery.mCustomScrollbar.min.css')
+        link(rel='stylesheet', href='/stylesheets/css/cryptocoins.css')
+        link(rel='stylesheet', href='/stylesheets/css/cryptocoins-colors.css')
+
+
+    body.loginLayout
+        .loginHeader
+            .logo
+                a(href='#')
+                    img(src='/images/logo.png', alt='Logo')
+        .portlet.portlet-without-header
+            .portlet-content
+                div#login.container
+                    div: form(id='loginForm')
+                        fieldset
+                            .title
+                                span.line
+                                h2 Giriş Yap
+                            - var messages = getMessages()
+
+                            if messages.notify
+                                each msg in messages.info
+                                    .info= msg
+                            if messages.error
+                                each msg in messages.error
+                                    .error= msg
+                            div.form-group
+                                .input-with-label
+                                    label E-Posta Adresi
+                                    input.form-control(name='email', autofocus)
+                            div.form-group
+                                .input-with-label
+                                    label Şifre
+                                    input.form-control(name='password', type='password')
+                            a.forgotPw(href='#') Şifremi Unuttum
+                            div.form-actions
+                                input.btn.button.block.primary(name="submit", type="submit", value='Giriş Yap', style='margin: 0 auto;', id='loginBtn')
+                            br
+
+                            .alert.alert-danger(role='alert', style="display: none;", id="errorAlert")
+                                p#usernameOrPasswordError.form_error
+
+                        span.warning
+                            | Daha üye olmadınız mı?
+                            a.registerLink(href='../../auth/users/signup') Üye Olun
+        footer
+            .footerContent
+                .footerLogo
+                    img(src='/images/logo.png', alt='Logo')
+                .copyright
+                    | 2018 — All rights reserved
+        script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js')
+        script(src='js/app.js', type='text/javascript')
+        script(src='/javascripts/auth.js', type='text/javascript')
+

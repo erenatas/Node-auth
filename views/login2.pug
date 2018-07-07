@@ -1,0 +1,17 @@
+block body
+    div#login.container
+        div: form(method='post', action = '/auth/users/login',class='form-vertical')
+            fieldset
+                legend: strong.text-info Login page
+
+
+                div.form-group
+                    label Email:
+                    input.form-control(name='email', autofocus)
+
+                div.form-group
+                    label Password:
+                    input.form-control(name='password', type='password')
+
+                div.form-actions
+                        input.btn.btn-primary(type='submit', value='Login')
