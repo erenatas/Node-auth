@@ -31,7 +31,7 @@ module.exports = function(passport) {
     // used to deserialize the user
     passport.deserializeUser(function(id, done) {
         connection.query('SELECT * FROM Users WHERE id = ?', [id], function(err, rows) {
-            done(err, rows[0]);
+            done(err, rows[0]); //handle db conn failure here?
         });
     });
 

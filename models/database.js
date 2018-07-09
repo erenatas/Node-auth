@@ -1,21 +1,27 @@
-var mysql      = require('mysql');
-var connection = mysql.createConnection({
+var mysql = require('mysql');
+
+var pool = mysql.createPool({
+    connectionLimit: 10,
     host     : 'localhost',
     user     : 'eren',
     password : 'eren',
     database : 'deneme'
 });
-connection.connect(function(err){
-    if(!err) {
-        console.log("Database is connected ... nn");
-    } else {
-        console.log("Error connecting database ... nn");
+
+pool.getConnection((err, connection) => {
+    if (err) {
+        if (err.code === 'PROTOCOL_CONNECTION_LOST') {
+            console.error('Database connection was closed.')
+        }
+        if (err.code === 'ER_CON_COUNT_ERROR') {
+            console.error('Database has too many connections.')
+        }
+        if (err.code === 'ECONNREFUSED') {
+            console.error('Database connection was refused.')
+        }
     }
+    if (connection) connection.release();
+    return;
 });
 
-module.exports = connection;
-
-var query = async function (query) {
-    connection.query(query)
-
-}
+module.exports = pool;
