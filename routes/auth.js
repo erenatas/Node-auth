@@ -133,7 +133,6 @@ router.get('/totp-input', isLoggedIn, function(req, res) {
     if(!req.user.authkey) {
         console.log("Logic error, totp-input requested with no key set");
         res.redirect('/auth/users/login');
-        req.session.eren _
     }
     res.render('totp-input');
 });
