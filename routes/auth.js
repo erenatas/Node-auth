@@ -1,4 +1,6 @@
 const userController = require('./../controllers/UserController');
+const emailController = require('./../controllers/emailController');
+
 
 const express         = require('express');
 const router         = express.Router();
@@ -190,6 +192,16 @@ router.post('/users/checkemail', function (req, res){
             });
         }
     });
+});
+
+router.post('/userVerify', emailController.sendEmailVerification, function (req, res) {
+    console.log('userVerify Success!')
+});
+
+router.get('/verify/:URL', function(req, res) {
+    var url = req.params.URL;
+
+
 });
 
 module.exports = router;
