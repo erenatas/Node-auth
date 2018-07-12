@@ -194,15 +194,9 @@ router.post('/users/checkemail', function (req, res){
     });
 });
 
-router.post('/userVerify', emailController.sendEmailVerification, function (req, res) {
-    console.log('userVerify Success!')
-});
+router.post('/userVerify', emailController.sendEmailVerification);
 
-router.get('/verify/:URL', function(req, res) {
-    var url = req.params.URL;
-
-
-});
+router.get('/verify', emailController.verifyEmail);
 
 module.exports = router;
 

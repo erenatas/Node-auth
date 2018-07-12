@@ -16,7 +16,7 @@ let sendEmailVerification = async function(req, res, next){
 
     redisClient.get(req.body.email, function (err, data) {
         if(err){
-            //handle error
+            console.log(err);
         }
 
         if(data === null){
@@ -24,10 +24,11 @@ let sendEmailVerification = async function(req, res, next){
                 if (err)
                     return done(err);
                 if (rows.length) {
+                    res.render('login');
                     //let rand = Math.floor((Math.random() * 100) + 54);
                     let encodedMail = new Buffer(req.body.email).toString('base64');
                     //let link="http://"+req.get('host')+"/verify?mail="+encodedMail+"&id="+rand;
-                    let link="http://"+req.get('host')+"/verify?mail="+encodedMail;
+                    let link="http://"+req.get('host')+"/auth/verify?mail="+encodedMail;
 
                     const mailOptions = {
                         from: 'denemenode@gmail.com', // sender address
@@ -50,10 +51,11 @@ let sendEmailVerification = async function(req, res, next){
                     //console.log("Message sent: " + JSON.stringify(response));
                     // Adding hash key.
                     redisClient.set(req.body.email,encodedMail, 'EX', 600);
-                }});
+                }
+            });
         }
-        next();
     });
+
 };
 
 
@@ -63,14 +65,44 @@ module.exports.sendEmailVerification = sendEmailVerification;
 
 
 let verifyEmail = async function(req, res, next){
-    var url = req.query.size === 'mail';
-    redisClient.get(url,function(err,reply) {
+    console.log(req.query);
+    var email = Buffer.from(req.query.mail, 'base64').toString('ascii');
+    console.log(email);
+    redisClient.get(email,function(err,reply) {
         if (err) {
-            return callback(true, "Error in redis");
+            console.log('errorAA' + err);
+            res.redirect('/404');
         }
         if (reply === null) {
-            return callback(true, "Invalid email address");
+            console.log('verifyEmail email null');
+            res.redirect('/404');
+        }
+        if (reply === req.query.mail){
+            connection.query("SELECT activation FROM Users WHERE email = ?",[email], function(err, rows) {
+                if(err){
+                    console.log(err);
+                }
+                if(rows.length){
+                    console.log(rows);
+                    connection.query("UPDATE Users SET activation = ? WHERE email = ?", ['1', email], function (err) {
+                        if(err){
+                            console.log(err);
+                        }
+                    });
+                    redisClient.del(email, function(err,reply) {
+                        if(!err) {
+                            if(reply === 1) {
+                                console.log("Key is deleted");
+                            } else {
+                                console.log("Does't exists");
+                            }
+                        }});
+                }
+            });
         }
     });
+    res.redirect('/auth/users/login');
 };
+
+module.exports.verifyEmail = verifyEmail;
 

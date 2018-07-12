@@ -47,14 +47,14 @@ const create = async function(req, res, next) {
             })
         }
             else {
-            var insertQuery = "INSERT INTO Users ( email, password, first, last, phone, createdAt, updatedAt) values (?,?,?,?,?,?,?)";
+            var insertQuery = "INSERT INTO Users ( email, password, first, last, phone, createdAt, updatedAt, activation) values (?,?,?,?,?,?,?,?)";
 
             const saltRounds = 10;
             var hashpw;
 
             bcrypt.genSalt(saltRounds, function(err, salt) {
                 bcrypt.hash(req.body.password, salt, function(err, hash) {
-                    connection.query(insertQuery,[req.body.email, hash, req.body.first, req.body.last, req.body.phone, today, today]);
+                    connection.query(insertQuery,[req.body.email, hash, req.body.first, req.body.last, req.body.phone, today, today, '0']);
                     console.log('success signup');
                     next();
                 });
