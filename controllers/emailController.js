@@ -106,3 +106,18 @@ let verifyEmail = async function(req, res, next){
 
 module.exports.verifyEmail = verifyEmail;
 
+const emailVerifySession = async function(req, res, next){
+    console.log('user: ' + req.session.req.user.id);
+    connection.query("SELECT activation FROM Users WHERE id = ?",[req.session.req.user.id], function(err, rows) {
+        if (err) {
+            console.log(err);
+        }
+        if (rows.length) {
+            console.log(rows[0].activation);
+            req.session.activated = rows[0].activation;
+        }
+    }
+    );
+};
+
+module.exports.emailVerifySession = emailVerifySession;

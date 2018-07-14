@@ -1,0 +1,36 @@
+head
+    title Bootstrap Example
+    meta(charset='utf-8')
+    meta(name='viewport' content='width=device-width, initial-scale=1')
+    link(rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css')
+    script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js')
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js')
+    script(src='https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js')
+
+
+.container
+    .row.hidden-md-up
+        .col-md-4
+            .card
+                .card-block
+                    img.card-img-top(src='/images/envelope-icon.png' alt='Card image' style='width:100%')
+                    .card-body
+                        h4.card-title Email Activation
+                        p.card-text Some example text some example text. John Doe is an architect and engineer
+                        a.btn.btn-primary(href='#') Setup Email Activation
+        .col-md-4
+            .card
+                .card-block
+                    img.card-img-top(src='/images/envelope-icon.png' alt='Card image' style='width:100%')
+                    .card-body
+                        h4.card-title SMS 2FA Activation
+                        p.card-text Some example text some example text. John Doe is an architect and engineer
+                        a.btn.btn-primary(href='#') Setup SMS 2FA Activation
+        .col-md-4
+            .card
+                .card-block
+                    img.card-img-top(src='/images/authenticator-icon.png' alt='Card image' style='width:100%')
+                    .card-body
+                        h4.card-title Authenticator 2FA Activation
+                        p.card-text Some example text some example text. John Doe is an architect and engineer
+                        a.btn.btn-primary(href='#') Setup Google Authenticator

@@ -19,7 +19,7 @@ require('./../middleware/passport')(passport);
 
 
 
-function isLoggedIn(req, res, next) {
+const isLoggedIn = async function(req, res, next) {
     if(req.isAuthenticated()) {
         console.log('authenticated');
         next();
@@ -27,11 +27,14 @@ function isLoggedIn(req, res, next) {
         console.log('notAuthenticated');
         res.redirect('/auth/users/login');
     }
-}
+};
+
 
 router.get('/', isLoggedIn, ensureTotp, function(req, res) {
     res.redirect('/auth/totp-setup');
 });
+
+
 
 function ensureTotp(req, res, next) {
     console.log(req.session.method);
@@ -54,17 +57,19 @@ function ensureTwoFASession(req, res, next){
 }
 
 router.post('/users/login', passport.authenticate('local', {failWithError: true}),
-    function(req, res) {
+    function(req, res, next) {
     console.log('user '+req.user.authkey);
+    emailController.emailVerifySession(req,res,next);
+
     if(req.user.authkey) {
         req.session.method = 'totp';
         return res.status(200).send({result: 'redirect', url:'/auth/totp-input'});
         //res.redirect('/auth/totp-input');
     } else {
         req.session.method = 'plain';
-        res.redirect('/auth/totp-setup');
+        return res.status(200).send({result: 'redirect', url:'/users/profile'});
     }
-}, function(err, req, res, next) {
+    } , function(err, req, res, next) {
     if(req.body.email == '' && req.body.password == ''){
         return res.status(400).send({result: 'err', message: "Kullanıcı adı ve şifre boş."});
     } else if(req.body.email = ''){
@@ -155,14 +160,7 @@ router.get('/hello', isLoggedIn, ensureTwoFASession,
 
 router.post('/users/signup', userController.create, passport.authenticate('local', {failureRedirect: '/auth/users/signup'}),
     function(req, res) {
-        console.log('user '+req.user.authkey);
-        if(req.user.authkey) {
-            req.session.method = 'totp';
-            res.redirect('/auth/totp-input');
-        } else {
-            req.session.method = 'plain';
-            res.redirect('/auth/totp-setup');
-        }
+        res.redirect('/profile');
     });
 
 router.get('/users/signup', function (req, res) {
@@ -173,7 +171,7 @@ router.get('/users/signup', function (req, res) {
 router.get('/users/logout', function (req, res) {
     req.session.destroy();
     res.redirect('/');
-})
+});
 
 
 router.post('/users/checkemail', function (req, res){
@@ -200,3 +198,4 @@ router.get('/verify', emailController.verifyEmail);
 
 module.exports = router;
 
+module.exports.isLoggedIn = isLoggedIn;
