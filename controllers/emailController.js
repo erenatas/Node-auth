@@ -7,32 +7,32 @@ var transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
         user: 'denemenode@gmail.com',
-        pass: '123'
+        pass: 'Garageyoyo12'
     }
 });
 
 let sendEmailVerification = async function(req, res, next){
-    console.log(req.body.email);
+    console.log(req.user.email);
 
-    redisClient.get(req.body.email, function (err, data) {
+    redisClient.get(req.user.email, function (err, data) {
         if(err){
             console.log(err);
         }
 
         if(data === null){
-            connection.query("SELECT * FROM Users WHERE email = ?",[req.body.email], function(err, rows) {
+            connection.query("SELECT * FROM Users WHERE email = ?",[req.user.email], function(err, rows) {
                 if (err)
                     return done(err);
                 if (rows.length) {
-                    res.render('login');
+                    // res.render('login');
                     //let rand = Math.floor((Math.random() * 100) + 54);
-                    let encodedMail = new Buffer(req.body.email).toString('base64');
+                    let encodedMail = new Buffer(req.user.email).toString('base64');
                     //let link="http://"+req.get('host')+"/verify?mail="+encodedMail+"&id="+rand;
                     let link="http://"+req.get('host')+"/auth/verify?mail="+encodedMail;
 
                     const mailOptions = {
                         from: 'denemenode@gmail.com', // sender address
-                        to: req.body.email, // list of receivers
+                        to: req.user.email, // list of receivers
                         subject: 'Subject of your email', // Subject line
                         html: '<p>Your html here</p><a href='+link+'>Click here to verify</a>'// plain text body
                     };
@@ -50,11 +50,13 @@ let sendEmailVerification = async function(req, res, next){
 
                     //console.log("Message sent: " + JSON.stringify(response));
                     // Adding hash key.
-                    redisClient.set(req.body.email,encodedMail, 'EX', 600);
+                    redisClient.set(req.user.email,encodedMail, 'EX', 600);
+                    next();
                 }
             });
         }
     });
+
 
 };
 
@@ -116,6 +118,7 @@ const emailVerifySession = async function(req, res, next){
             console.log(rows[0].activation);
             req.session.activated = rows[0].activation;
         }
+        next();
     }
     );
 };

@@ -59,7 +59,7 @@ function ensureTwoFASession(req, res, next){
 router.post('/users/login', passport.authenticate('local', {failWithError: true}),
     function(req, res, next) {
     console.log('user '+req.user.authkey);
-    emailController.emailVerifySession(req,res,next);
+    //emailController.emailVerifySession(req,res,next);
 
     if(req.user.authkey) {
         req.session.method = 'totp';
@@ -192,9 +192,11 @@ router.post('/users/checkemail', function (req, res){
     });
 });
 
-router.post('/userVerify', emailController.sendEmailVerification);
+router.get('/userVerify', isLoggedIn, emailController.sendEmailVerification, function (req, res) {
+    res.render('index');
+});
 
-router.get('/verify', emailController.verifyEmail);
+router.get('/verify', isLoggedIn, emailController.verifyEmail);
 
 module.exports = router;
 

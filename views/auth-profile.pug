@@ -17,7 +17,11 @@ head
                     .card-body
                         h4.card-title Email Activation
                         p.card-text Some example text some example text. John Doe is an architect and engineer
-                        a.btn.btn-primary(href='#') Setup Email Activation
+                        - if (mailActivate !== null){
+                        a.btn.btn-primary(href='#') Activated
+                        - } else {
+                        a.btn.btn-primary(href='/auth/userVerify') Setup Email Activation
+                            - }
         .col-md-4
             .card
                 .card-block
